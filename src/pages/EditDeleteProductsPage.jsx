@@ -52,7 +52,7 @@ const EditDeleteProductsPage = () => {
 
   return (
     <SideBarHeader>
-      <div className="w-full max-w-7xl mx-auto px-2 xs:px-3 sm:px-4 md:px-6 lg:px-8 py-6 bg-gray-900 min-h-screen">
+      <div className="w-screen md:w-full  max-w-7xl  mx-auto px-2 xs:px-3 sm:px-4 md:px-6 lg:px-8 py-6 bg-gray-900 min-h-screen overflow-hidden">
         {/* Header Section */}
         <section className="mb-6">
           <button
@@ -75,36 +75,36 @@ const EditDeleteProductsPage = () => {
             <table className="w-full text-left text-gray-300">
               <thead>
                 <tr className="bg-gray-700">
-                  <th className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base sm:text-lg">ID</th>
-                  <th className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base sm:text-lg">Title</th>
-                  <th className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base sm:text-lg">Category</th>
-                  <th className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base sm:text-lg">Price</th>
-                  <th className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base sm:text-lg">Stock</th>
-                  <th className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base sm:text-lg">Actions</th>
+                  <th className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base min-w-[60px]">ID</th>
+                  <th className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base min-w-[150px]">Title</th>
+                  <th className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base min-w-[100px] hidden sm:table-cell">Category</th>
+                  <th className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base min-w-[80px]">Price</th>
+                  <th className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base min-w-[80px] hidden md:table-cell">Stock</th>
+                  <th className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base min-w-[120px]">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((product) => (
                   <tr key={product.id} className="border-b border-gray-700 hover:bg-gray-600">
-                    <td className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base">{product.id}</td>
-                    <td className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base">{product.title}</td>
-                    <td className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base">{product.category}</td>
-                    <td className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base">${product.price}</td>
-                    <td className="p-2 xs:p-3 sm:p-4 text-sm xs:text-base">{product.stock}</td>
-                    <td className="p-2 xs:p-3 sm:p-4 flex space-x-2">
+                    <td className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base">{product.id}</td>
+                    <td className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base">{product.title}</td>
+                    <td className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base hidden sm:table-cell">{product.category}</td>
+                    <td className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base">${product.price}</td>
+                    <td className="p-2 xs:p-2 sm:p-3 md:p-4 text-xs xs:text-sm sm:text-base hidden md:table-cell">{product.stock}</td>
+                    <td className="p-2 xs:p-2 sm:p-3 md:p-4 flex space-x-1 xs:space-x-2">
                       <button
                         onClick={() => handleEdit(product)}
-                        className="flex items-center px-2 xs:px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-xs xs:text-sm sm:text-base"
+                        className="flex items-center px-1 xs:px-2 sm:px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors text-xs sm:text-sm"
                       >
-                        <FaEdit className="mr-1" />
-                        Edit
+                        <FaEdit className="mr-0 xs:mr-1" />
+                        <span className="hidden xs:inline">Edit</span>
                       </button>
                       <button
                         onClick={() => handleDelete(product.id)}
-                        className="flex items-center px-2 xs:px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors text-xs xs:text-sm sm:text-base"
+                        className="flex items-center px-1 xs:px-2 sm:px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors text-xs sm:text-sm"
                       >
-                        <FaTrash className="mr-1" />
-                        Delete
+                        <FaTrash className="mr-0 xs:mr-1" />
+                        <span className="hidden xs:inline">Delete</span>
                       </button>
                     </td>
                   </tr>

@@ -27,7 +27,7 @@ const SideBarHeader = ({ children }) => {
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-in-out md:w-20 md:translate-x-0 md:flex md:flex-col md:items-center md:py-4 md:space-y-6 md:bg-gray-800 md:border-r md:border-gray-700`}
       >
-        <div className="flex items-center justify-between p-4 border-b border-gray-700 md:hidden">
+        <div className="  flex items-center justify-between p-4 border-b border-gray-700 md:hidden">
           <h2 className="text-xl font-bold text-orange-500">CRM Dashboard</h2>
           <button className="text-white" onClick={toggleSidebar}>
             <FaTimes size={24} />
