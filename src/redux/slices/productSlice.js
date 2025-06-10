@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Fetch all products
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async ({ limit = 20, skip = 0 }, { rejectWithValue }) => {
+  async ({ limit = 100, skip = 0 }, { rejectWithValue }) => {
     try {
       const response = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
       if (!response.ok) {
@@ -53,7 +53,6 @@ export const fetchProductById = createAsyncThunk(
 export const fetchProductsBySearch = createAsyncThunk(
   'products/fetchProductsBySearch',
   async (query, { rejectWithValue }) => {
-    console.log(query)
     try {
       const response = await fetch(`https://dummyjson.com/products/search?q=${encodeURIComponent(query)}`);
       if (!response.ok) {
@@ -61,6 +60,67 @@ export const fetchProductsBySearch = createAsyncThunk(
       }
       const data = await response.json();
       return data.products;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Add a new product
+export const addProduct = createAsyncThunk(
+  'products/addProduct',
+  async (productData, { rejectWithValue }) => {
+    try {
+      const response = await fetch('https://dummyjson.com/products/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add product');
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Update a product
+export const updateProduct = createAsyncThunk(
+  'products/updateProduct',
+  async ({ id, updatedData }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`https://dummyjson.com/products/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update product');
+      }
+      const data = await response.json();
+      return { id, updatedProduct: data };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Delete a product
+export const deleteProduct = createAsyncThunk(
+  'products/deleteProduct',
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`https://dummyjson.com/products/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete product');
+      }
+      const data = await response.json();
+      return { id, deletedProduct: data };
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -149,6 +209,50 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.searchResults = [];
+      })
+      // Add product
+      .addCase(addProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products.push(action.payload); // Add the new product to the list
+      })
+      .addCase(addProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Update product
+      .addCase(updateProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id, updatedProduct } = action.payload;
+        const index = state.products.findIndex((product) => product.id === id);
+        if (index !== -1) {
+          state.products[index] = { ...state.products[index], ...updatedProduct };
+        }
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Delete product
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id } = action.payload;
+        state.products = state.products.filter((product) => product.id !== id);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

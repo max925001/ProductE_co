@@ -7,6 +7,11 @@ import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import { useSelector } from 'react-redux'
 import ProductPage from './pages/ProductPage'
+import DashboardPage from './pages/DashboardPage'
+import EditDeleteProductsPage from './pages/EditDeleteProductsPage'
+import PrivateRoute from './components/PrivateRoute'
+import AddNewProduct from './pages/AddNewProduct'
+import UnauthorizedPage from './pages/UnauthorizedPage'
 
 function App() {
 const {data} = useSelector((state) => state.auth);
@@ -16,6 +21,13 @@ const {data} = useSelector((state) => state.auth);
 <Route path='/' element={data ? <HomePage /> : <Navigate to='/login' />}/>
 <Route path='/product/:id' element={data ? <ProductPage /> : <Navigate to='/login' />}/>
 <Route path='/login' element={<LoginPage />} />
+<Route element={<PrivateRoute requireAdmin={true} />}>
+<Route path="/dashboard" element={<DashboardPage />} />
+<Route path="/add-product" element={<AddNewProduct />} />
+<Route path="/edit-delete-products" element={<EditDeleteProductsPage />} />
+</Route>
+<Route path="/unauthorized" element={<UnauthorizedPage />} />
+
 
 
 

@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/slices/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const LoginPage = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
@@ -16,10 +18,15 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await dispatch(login(credentials));
-    console.log(login.fulfilled.match(result))
+    console.log(login.fulfilled.match(result));
     if (login.fulfilled.match(result)) {
       navigate('/');
     }
+  };
+
+  // Toggle password visibility
+  const toggleShowPassword = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -46,16 +53,25 @@ const LoginPage = () => {
             <label htmlFor="password" className="block text-sm font-medium text-gray-300">
               Password
             </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={credentials.password}
-              onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-              placeholder="Enter password"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'} // Toggle between text and password
+                name="password"
+                id="password"
+                value={credentials.password}
+                onChange={handleChange}
+                className="mt-1 w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="Enter password"
+                required
+              />
+              <button
+                type="button"
+                onClick={toggleShowPassword}
+                className="absolute right-3 cursor-pointer top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-orange-500 focus:outline-none"
+              >
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </button>
+            </div>
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button

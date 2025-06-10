@@ -10,7 +10,7 @@ const PrivateRoute = ({ requireAdmin = false }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (requireAdmin && role !== 'admin') {
+  if (requireAdmin && data.role !== 'admin') {
     
     return <Navigate to="/unauthorized" replace />;
   }
